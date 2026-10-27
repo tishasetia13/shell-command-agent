@@ -49,7 +49,8 @@ def run_agent(task):
             messages=messages,
         )
         if response.stop_reason != 'tool_use':
-            return response.content[0].text
+            texts = [block.text for block in response.content if block.type == 'text']
+            return "\n".join(texts)
 
         messages.append({'role': 'assistant', 'content': response.content})
 
